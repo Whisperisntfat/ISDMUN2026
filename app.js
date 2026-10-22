@@ -817,38 +817,6 @@ window.download = async function(password) {
   return data;
 };
 
-window.who = async function(password, browserTag) {
-  const response = await fetch('/api/gossip-who', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password: String(password || ''), browserTag: String(browserTag || '').trim() })
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const message = data.error || 'Could not inspect that Browser Tag.';
-    console.error(message);
-    return { ok: false, error: message };
-  }
-
-  const p = data.profile || {};
-  console.table([{
-    BrowserTag: p.browserTag || '',
-    Logins: p.loginCount || 0,
-    FirstSeen: p.firstSeen || '',
-    LastSeen: p.lastSeen || '',
-    Councils: (p.councils || []).join(', '),
-    IPAddresses: (p.ipAddresses || []).join(', '),
-    NetworkTags: (p.networkTags || []).join(', '),
-    Platforms: (p.platforms || []).join(', '),
-    Languages: (p.languages || []).join(', '),
-    MobileHints: (p.mobileHints || []).join(', '),
-    DoNotTrack: (p.doNotTrack || []).join(', ')
-  }]);
-  console.log('User agents:', p.userAgents || []);
-  console.log('Browser brands:', p.clientBrands || []);
-  return data;
-};
-
 
 window.signout = async function(password, browserTag) {
   const response = await fetch('/api/gossip-signout', {
