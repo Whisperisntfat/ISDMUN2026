@@ -1,4 +1,4 @@
-import { clearBrowserIdentity, getBrowserId, redisCommand } from '../lib/gossip.js';
+import { clearBrowserIdentity, getBrowserId, GLOBAL_RESET_KEY, redisCommand, sessionPredatesReset } from '../lib/gossip.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -15,10 +15,13 @@ export default async function handler(req, res) {
       const values = await redisCommand([
         'MGET',
         'isdmun:gossip:broadcast',
-        `isdmun:gossip:revoked:${browserId}`
+        `isdmun:gossip:revoked:${browserId}`,
+        GLOBAL_RESET_KEY
       ]);
       raw = Array.isArray(values) ? values[0] : null;
-      revoked = Boolean(Array.isArray(values) ? values[1] : null);
+      const individuallyRevoked = Boolean(Array.isArray(values) ? values[1] : null);
+      const resetAt = Array.isArray(values) ? values[2] : null;
+      revoked = individuallyRevoked || sessionPredatesReset(req, resetAt);
     } else {
       raw = await redisCommand(['GET', 'isdmun:gossip:broadcast']);
     }
