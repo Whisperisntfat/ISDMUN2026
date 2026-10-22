@@ -175,12 +175,12 @@ nav a:hover { color: var(--gold); }
 footer { background: #0c241d; color: rgba(255,255,255,.78); padding: 34px 0; }
 .footer-grid { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 30px; }
 .footer-brand { display: flex; gap: 12px; align-items: center; }
-.footer-brand img { width: 44px; height: 44px; object-fit: cover; }
+.footer-brand img { width: 58px; height: 58px; object-fit: cover; }
 .footer-brand div { display: grid; line-height: 1.2; }
 .footer-brand span { font-size: .8rem; opacity: .7; }
 .footer-meta { display: flex; align-items: center; gap: 22px; justify-content: flex-end; flex-wrap: wrap; }
 .footer-credit { display: inline-flex; align-items: center; gap: 10px; }
-.footer-credit img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: center 18%; border: 1px solid rgba(255,255,255,.18); }
+.footer-credit img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; object-position: center 18%; border: 1px solid rgba(255,255,255,.18); }
 .footer-credit div { display: grid; line-height: 1.15; }
 .footer-credit strong { font-size: .72rem; color: var(--gold-soft); text-transform: uppercase; letter-spacing: .08em; }
 .footer-credit span { font-size: .88rem; color: rgba(255,255,255,.92); font-weight: 700; }
