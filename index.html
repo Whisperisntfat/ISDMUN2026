@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="ISD MUN 2026 — conference schedule, committees, student officers, rules of procedure, council topics and research papers." />
+  <meta name="theme-color" content="#17392f" />
+  <title>ISD MUN 2026 | A World in Transition</title>
+  <link rel="icon" href="assets/isdmun-logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-wrap container">
+      <a class="brand" href="#top" aria-label="ISD MUN 2026 home">
+        <img src="assets/isdmun-logo.png" alt="ISD MUN 2026 logo" />
+        <span><strong>ISD MUN</strong><small>2026</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav id="mainNav" aria-label="Main navigation">
+        <a href="#committees">Committees</a>
+        <a href="#team">Team</a>
+        <a href="#gossip">Gossip Box</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#rules">Rules</a>
+        <a href="#topics">Topics</a>
+        <a href="#research">Research</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-watermark" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Indian School Dar es Salaam</p>
+          <h1>Welcome to <span>ISDMUN 2026</span></h1>
+          <div class="theme-card">
+            <span>Conference theme</span>
+            <strong>A World in Transition</strong>
+            <p>Redefining power, peace, and progress in a changing world.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn primary" href="#schedule">View conference schedule</a>
+            <a class="btn secondary" href="assets/isd-mun-2026-research-papers.pdf" target="_blank" rel="noreferrer">Open research papers ↗</a>
+          </div>
+          <p class="micro-note">24–25 October 2026 · Indian School Dar es Salaam</p>
+        </div>
+        <div class="hero-emblem reveal delay-1">
+          <div class="emblem-ring"><img src="assets/isdmun-logo.png" alt="ISD MUN 2026 emblem" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro-strip" aria-label="Conference overview">
+      <div class="container stats">
+        <div><strong>8</strong><span>Committees</span></div>
+        <div><strong>16</strong><span>Student officers</span></div>
+        <div><strong>16</strong><span>Research papers</span></div>
+        <div><strong>2</strong><span>Conference days</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="committees">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Councils</p>
+          <h2>Committees & agendas</h2>
+          <p>Explore each committee, its two agenda topics, and the President/Chair and Deputy Chair representing participating schools.</p>
+        </div>
+        <div class="committee-grid" id="committeeGrid"></div>
+      </div>
+    </section>
+
+    <section class="section tint" id="chairs">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Student officers</p>
+          <h2>Meet the chairs</h2>
+          <p>All President/Chairs and Deputy Chairs for ISDMUN 2026.</p>
+        </div>
+        <div class="filters reveal">
+          <label class="search-box">
+            <span class="sr-only">Search chairs</span>
+            <input id="chairSearch" type="search" placeholder="Search name, school or committee…" autocomplete="off" />
+          </label>
+          <select id="chairRole" aria-label="Filter chairs by role">
+            <option value="all">All roles</option>
+            <option value="President / Chair">President / Chair</option>
+            <option value="Deputy Chair">Deputy Chair</option>
+          </select>
+        </div>
+        <div class="chair-grid" id="chairGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Leadership team</p>
+          <h2>Secretariat & team heads</h2>
+          <p>Meet the students leading administration, delegate affairs, hospitality, logistics, creative work, and technology & media for ISDMUN 2026.</p>
+        </div>
+        <div class="team-grid" id="teamGrid"></div>
+      </div>
+    </section>
+
+
+
+    <section class="section gossip-section tint" id="gossip">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Anonymous council messages</p>
+          <h2>Gossip Boxes</h2>
+          <p>Choose your council to drop an anonymous message. Each council has its own private box and its own reader password.</p>
+        </div>
+        <div class="gossip-notice reveal" role="note">
+          <strong>Keep it fun, not harmful.</strong>
+          <span>Do not submit threats, harassment, private contact details, or sensitive personal information. Messages are anonymous to council readers and are stored privately on the server.</span>
+        </div>
+        <div class="gossip-grid" id="gossipGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Conference programme</p>
+          <h2>ISDMUN II 2026 schedule</h2>
+          <p>Full programme for 24–25 October 2026, including lunch rotations and Day 2 group-photo timings.</p>
+        </div>
+
+        <div class="schedule-grid">
+          <article class="schedule-card reveal">
+            <div class="schedule-head"><span>Day 1</span><h3>24 October 2026</h3></div>
+            <div class="schedule-list">
+              <div><time>7:30</time><span>Arrival</span></div>
+              <div><time>8:00–8:45</time><span>Opening Ceremony</span></div>
+              <div><time>9:00–9:40</time><span>Breakfast and icebreakers</span></div>
+              <div><time>9:50–11:30</time><span>Lobbying and Merging — Topic 1</span></div>
+              <div><time>11:30–1:00</time><span>Lunch</span></div>
+              <div><time>1:10–3:00</time><span>Lobbying and Merging — Topic 2</span></div>
+              <div><time>3:00–3:40</time><span>MUN Tournament</span></div>
+              <div><time>3:40–4:00</time><span>Snacks</span></div>
+              <div><time>4:00</time><span>Dispersal</span></div>
+            </div>
+          </article>
+
+          <article class="schedule-card reveal delay-1">
+            <div class="schedule-head"><span>Day 2</span><h3>25 October 2026</h3></div>
+            <div class="schedule-list">
+              <div><time>7:30</time><span>Arrival</span></div>
+              <div><time>7:30–8:30</time><span>Group Photos</span></div>
+              <div><time>8:30–11:30</time><span>Debate</span></div>
+              <div><time>11:30–1:00</time><span>Lunch</span></div>
+              <div><time>1:00–3:30</time><span>Debate</span></div>
+              <div><time>3:40–4:00</time><span>Final of MUN Tournament</span></div>
+              <div><time>4:00–5:00</time><span>Closing Ceremony</span></div>
+              <div><time>5:00</time><span>Snacks and dispersal</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="timing-grid">
+          <article class="timing-card reveal">
+            <div class="mini-heading"><p class="eyebrow">Both days</p><h3>Lunch timings</h3></div>
+            <div class="compact-table" role="table" aria-label="Lunch timings">
+              <div class="table-row table-head" role="row"><span>Time</span><span>Committee</span></div>
+              <div class="table-row" role="row"><time>11:30–12:00</time><span>HRC I & HRC II</span></div>
+              <div class="table-row" role="row"><time>11:40–12:10</time><span>Political Council</span></div>
+              <div class="table-row" role="row"><time>11:50–12:20</time><span>Security Council</span></div>
+              <div class="table-row" role="row"><time>12:00–12:30</time><span>ECOFIN I & ECOFIN II</span></div>
+              <div class="table-row" role="row"><time>12:10–12:40</time><span>ECOSOC</span></div>
+              <div class="table-row" role="row"><time>12:20–1:00</time><span>SPECPOL</span></div>
+            </div>
+          </article>
+
+          <article class="timing-card reveal delay-1">
+            <div class="mini-heading"><p class="eyebrow">Day 2</p><h3>Group photos</h3></div>
+            <div class="compact-table" role="table" aria-label="Group photo timings">
+              <div class="table-row table-head" role="row"><span>Time</span><span>School</span></div>
+              <div class="table-row" role="row"><time>7:30–7:35</time><span>Braeburn DSM International</span></div>
+              <div class="table-row" role="row"><time>7:35–7:40</time><span>Academic International</span></div>
+              <div class="table-row" role="row"><time>7:40–7:45</time><span>Al Muntazir International</span></div>
+              <div class="table-row" role="row"><time>7:45–7:50</time><span>Feza International</span></div>
+              <div class="table-row" role="row"><time>7:50–7:55</time><span>Dar Es Salaam Independent</span></div>
+              <div class="table-row" role="row"><time>7:55–8:00</time><span>HOPAC</span></div>
+              <div class="table-row" role="row"><time>8:00–8:05</time><span>Stepping Stones International</span></div>
+              <div class="table-row" role="row"><time>8:05–8:10</time><span>Dar Es Salaam International Academy</span></div>
+              <div class="table-row" role="row"><time>8:10–8:15</time><span>Aga Khan</span></div>
+              <div class="table-row" role="row"><time>8:15–8:20</time><span>Indian School DSM</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint" id="rules">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Conference structure</p>
+          <h2>Rules of Procedure</h2>
+          <p>The formal guidelines governing debate, motions, questions, voting, resolutions and delegate conduct.</p>
+        </div>
+
+        <div class="rules-intro reveal">
+          <div><strong>Definition</strong><p>The set of formal guidelines that govern how a committee conducts debate, makes decisions, raises motions, asks questions, and votes on resolutions.</p></div>
+          <div><strong>Purpose</strong><p>Ensures orderly, fair, and diplomatically rigorous discussions across all delegates.</p></div>
+          <div><strong>Standard of Conduct</strong><p>Demands strict decorum, parliamentary language, and respect for the Chair and fellow delegates.</p></div>
+        </div>
+
+        <div class="rules-grid">
+          <article class="rule-card reveal">
+            <span class="rule-number">01</span><h3>Roll Call & Quorum</h3>
+            <p><strong>The Process:</strong> The Chair calls each country's name alphabetically or by roll.</p>
+            <p><strong>Response Options:</strong></p>
+            <ul>
+              <li><strong>Present:</strong> Delegates can vote Yes, No, or Abstain on substantive matters.</li>
+              <li><strong>Present and Voting:</strong> Delegates must vote either Yes or No; no abstentions are allowed.</li>
+            </ul>
+            <p><strong>Quorum:</strong> The minimum number of member states required to be present for the committee to officially open and conduct business.</p>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">02</span><h3>Yielding Remaining Time</h3>
+            <p>After finishing a substantive speech in formal debate, a delegate can yield their leftover time.</p>
+            <ol>
+              <li><strong>Yield to the Chair:</strong> Gives leftover time back to the Chair, who decides what happens next.</li>
+              <li><strong>Yield to Another Delegate:</strong> Transfers remaining time to a specific delegate to continue speaking.</li>
+              <li><strong>Yield to Questions:</strong> Opens the floor for other delegates to ask questions about the speech.</li>
+            </ol>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">03</span><h3>Moderated Caucus</h3>
+            <p><strong>Definition:</strong> A structured, formal debate format focused on a specific sub-topic.</p>
+            <p><strong>Mechanics:</strong></p>
+            <ul>
+              <li>The Chair controls the speaking order.</li>
+              <li>Time per speaker is fixed, typically 30 to 60 seconds.</li>
+              <li>Delegates speak one by one from their seats.</li>
+            </ul>
+            <p><strong>Purpose:</strong> To explore particular aspects of the main agenda item and build momentum for ideas.</p>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">04</span><h3>Unmoderated Caucus</h3>
+            <p><strong>Definition:</strong> An informal, flexible discussion where delegates can leave their seats and move freely around the room.</p>
+            <p><strong>Mechanics:</strong></p>
+            <ul>
+              <li>No formal speaking order or strict time limit per individual.</li>
+              <li>Total duration is set by the Chair through a passing motion, typically 10 to 20 minutes.</li>
+            </ul>
+            <p><strong>Purpose:</strong> To collaborate, negotiate, merge proposals, and draft working papers or resolutions.</p>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">05</span><h3>Points</h3>
+            <p>Questions or clarifications a delegate can raise during debate.</p>
+            <ul>
+              <li><strong>Point of Personal Privilege:</strong> Addresses physical comfort or audibility.</li>
+              <li><strong>Point of Order:</strong> Highlights a procedural error.</li>
+              <li><strong>Point of Inquiry:</strong> Asks the Chair a question about committee procedure.</li>
+              <li><strong>Point of Information:</strong> Poses a question to a speaker.</li>
+            </ul>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">06</span><h3>Motions</h3>
+            <p>A formal request to move the committee forward or take action.</p>
+            <ul>
+              <li>Motion for a Moderated Caucus</li>
+              <li>Motion for an Unmoderated Caucus</li>
+              <li>Motion to Close Debate / Move to Voting</li>
+            </ul>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">07</span><h3>Draft Resolutions & Structure</h3>
+            <p><strong>Definition:</strong> The comprehensive document created by delegates listing concrete ideas and solutions to solve the committee's topic.</p>
+            <ol>
+              <li><strong>Know your topic:</strong> Research your nation's foreign policy stance.</li>
+              <li><strong>Team up:</strong> Form coalitions and blocs with other delegates.</li>
+              <li><strong>Structure:</strong> Include the committee name, topic, sponsors and signatories; preambulatory clauses explaining why the issue matters; and operative clauses mandating actionable solutions.</li>
+              <li><strong>Review:</strong> Ensure solutions are realistic, clear, and structurally sound.</li>
+            </ol>
+          </article>
+
+          <article class="rule-card reveal">
+            <span class="rule-number">08</span><h3>Amendments Process</h3>
+            <p><strong>Definition:</strong> Formal suggestions to change, add, or remove parts of a draft resolution before final voting.</p>
+            <ol>
+              <li><strong>Draft the Amendment:</strong> Clearly write the proposed additions, deletions, or alterations.</li>
+              <li><strong>Get Approval:</strong> Submit the text to the Chair to ensure it is in order.</li>
+              <li><strong>Seek Support:</strong> Gather the required sponsors and signatories.</li>
+              <li><strong>Debate & Vote:</strong> The committee discusses only the proposed change before voting.</li>
+              <li><strong>Incorporate:</strong> If passed, the amendment is integrated into the draft resolution.</li>
+            </ol>
+          </article>
+
+          <article class="rule-card wide reveal">
+            <span class="rule-number">09</span><h3>Voting Procedure</h3>
+            <div class="rule-columns">
+              <div>
+                <p><strong>Security:</strong> Once voting procedure begins, committee doors are locked; no entering or exiting is permitted.</p>
+                <p><strong>Sequence of Votes:</strong></p>
+                <ol><li>Amendments are voted on first.</li><li>Main draft resolutions are voted on second.</li></ol>
+              </div>
+              <div>
+                <p><strong>Voting Methods:</strong></p>
+                <ul>
+                  <li><strong>Placard Vote:</strong> Raising country placards to indicate Yes, No, or Abstain.</li>
+                  <li><strong>Roll-Call Vote:</strong> The Chair calls countries individually if requested.</li>
+                </ul>
+                <p><strong>Threshold:</strong> Requires a simple majority to pass and become an official resolution of the conference.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="topics">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Agendas</p>
+          <h2>Topics for councils</h2>
+          <p>The two official discussion topics assigned to each council family at ISDMUN 2026.</p>
+        </div>
+        <div class="topics-grid" id="topicsGrid"></div>
+      </div>
+    </section>
+
+    <section class="section tint" id="research">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Research library</p>
+          <h2>All council research papers</h2>
+          <p>Search by committee, topic or student officer. Each paper opens the consolidated research PDF at its relevant page.</p>
+        </div>
+        <div class="research-toolbar reveal">
+          <label class="search-box wide">
+            <span class="sr-only">Search research papers</span>
+            <input id="researchSearch" type="search" placeholder="Search topics, committees or officers…" autocomplete="off" />
+          </label>
+          <select id="committeeFilter" aria-label="Filter research papers by committee"></select>
+        </div>
+        <div class="research-count" id="researchCount" aria-live="polite"></div>
+        <div class="research-list" id="researchList"></div>
+        <div class="research-download reveal">
+          <div><strong>Complete research collection</strong><span>All council papers in one PDF.</span></div>
+          <a class="btn primary" href="assets/isd-mun-2026-research-papers.pdf" target="_blank" rel="noreferrer">Open complete PDF ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Secretariat & contacts</p>
+          <h2>Conference contacts</h2>
+          <p>Contact the Secretary-General or Deputy Secretary-General, and follow the official ISDMUN Instagram account.</p>
+        </div>
+        <div class="secretariat-grid">
+          <article class="secretariat-card reveal">
+            <span class="initials">AB</span>
+            <div><span class="role-label">Secretary-General (SG)</span><h3>Akilesh Bala</h3><a href="mailto:akileshbn128@gmail.com">akileshbn128@gmail.com</a></div>
+            <a class="btn primary" href="mailto:akileshbn128@gmail.com">Email SG</a>
+          </article>
+          <article class="secretariat-card reveal delay-1">
+            <span class="initials">SS</span>
+            <div><span class="role-label">Deputy Secretary-General (DSG)</span><h3>Shresth Sharma</h3><a href="mailto:shresthsharma893@gmail.com">shresthsharma893@gmail.com</a></div>
+            <a class="btn primary" href="mailto:shresthsharma893@gmail.com">Email DSG</a>
+          </article>
+          <article class="secretariat-card instagram-card reveal">
+            <span class="social-mark">◎</span>
+            <div><span class="role-label">Official Instagram</span><h3>@isdmunofficial</h3><p>Updates, announcements and conference highlights.</p></div>
+            <a class="btn secondary" href="https://www.instagram.com/isdmunofficial?exln=MWN3MTl2YzhuNWpqNw%3D%3D&utm_source=qr" target="_blank" rel="noreferrer">Open Instagram ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-section">
+      <div class="container reveal">
+        <p class="eyebrow">ISDMUN 2026</p>
+        <blockquote>“The United Nations was not created to take mankind to heaven, but to save humanity from hell.”</blockquote>
+        <cite>— Dag Hammarskjöld</cite>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="assets/isdmun-logo.png" alt="" /><div><strong>ISD MUN 2026</strong><span>Indian School Dar es Salaam</span></div></div>
+      <p>A World in Transition · 24–25 October 2026</p>
+      <button class="back-to-top" id="backToTop" type="button">Back to top ↑</button>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="committeeModal">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
+    <div id="modalBody"></div>
+  </dialog>
+
+
+
+  <dialog class="modal gossip-modal" id="gossipModal">
+    <button class="modal-close" id="gossipModalClose" type="button" aria-label="Close">×</button>
+    <div id="gossipModalBody">
+      <span class="modal-code" id="gossipCouncilCode"></span>
+      <h2 id="gossipCouncilName">Council Gossip Box</h2>
+      <p class="gossip-modal-intro">Send an anonymous message to this council's private box.</p>
+
+      <form id="gossipSubmitForm" class="gossip-form">
+        <label for="gossipMessage">Your message</label>
+        <textarea id="gossipMessage" name="message" rows="6" maxlength="1000" minlength="3" placeholder="Type your gossip, shout-out, funny moment or message…" required></textarea>
+        <div class="gossip-form-meta"><span id="gossipCharCount">0 / 1000</span><span>Anonymous submission</span></div>
+        <button class="btn primary" type="submit" id="gossipSendButton">Send to the box</button>
+        <p class="form-status" id="gossipSubmitStatus" aria-live="polite"></p>
+      </form>
+
+      <div class="gossip-divider"><span>council heads</span></div>
+
+      <button class="btn secondary gossip-read-toggle" type="button" id="gossipReadToggle">Read the box 🔒</button>
+      <form id="gossipReadForm" class="gossip-read-form" hidden>
+        <label for="gossipPassword">Council password</label>
+        <div class="password-row">
+          <input id="gossipPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter council password" required />
+          <button class="btn primary" type="submit" id="gossipUnlockButton">Unlock</button>
+        </div>
+        <p class="form-status" id="gossipReadStatus" aria-live="polite"></p>
+      </form>
+      <div id="gossipMessages" class="gossip-messages" hidden></div>
+    </div>
+  </dialog>
+
+
+  <script src="app.js"></script>
+</body>
+</html>
