@@ -882,6 +882,24 @@ window.message = async function(password, messageText) {
   return data;
 };
 
+
+window.rmall = async function(password) {
+  const response = await fetch('/api/gossip-reset-all', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: String(password || '') })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.error || 'Could not reset browser sessions.';
+    console.error(message);
+    return { ok: false, error: message };
+  }
+  console.log('All browser sessions and login logs reset. Everyone must log in again.');
+  window.setTimeout(() => window.location.reload(), 300);
+  return data;
+};
+
 (function setupBroadcastPolling() {
   let initialized = false;
   let lastSeenId = '';
