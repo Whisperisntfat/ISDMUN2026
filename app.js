@@ -278,6 +278,7 @@ const gossipIconByCouncil = {
 const gossipCouncils = committees.map(c => ({ id: c.id, code: c.code, name: c.name, icon: gossipIconByCouncil[c.id] }));
 let activeGossipCouncil = null;
 let activeGossipMessages = [];
+let gossipAdminMode = false;
 
 function renderGossipBoxes() {
   const grid = document.getElementById('gossipGrid');
@@ -312,6 +313,21 @@ function setCouncilAccessState(authenticated) {
   if (content) content.hidden = !authenticated;
 }
 
+function setGossipAdminMode(enabled) {
+  gossipAdminMode = Boolean(enabled);
+  const passwordEl = document.getElementById('gossipReaderPassword');
+  const label = document.querySelector('label[for="gossipReaderPassword"]');
+  const status = document.getElementById('gossipReadStatus');
+  if (passwordEl) {
+    passwordEl.required = !gossipAdminMode;
+    passwordEl.disabled = gossipAdminMode;
+    passwordEl.value = '';
+    passwordEl.placeholder = gossipAdminMode ? 'Admin access — no password required' : 'Enter reader password';
+  }
+  if (label) label.textContent = gossipAdminMode ? 'Admin access' : 'Council head reader password';
+  if (gossipAdminMode) setStatus(status, 'Admin access active — all council boxes are unlocked.', 'success');
+}
+
 async function checkCouncilAccess() {
   if (!activeGossipCouncil) return;
   const status = document.getElementById('gossipAccessStatus');
@@ -325,10 +341,12 @@ async function checkCouncilAccess() {
     });
     const data = await res.json().catch(() => ({}));
     if (res.ok && data.authenticated) {
+      setGossipAdminMode(Boolean(data.admin));
       setCouncilAccessState(true);
-      setStatus(status, '');
+      setStatus(status, data.admin ? 'Admin access active.' : '', data.admin ? 'success' : '');
       return;
     }
+    setGossipAdminMode(false);
     setCouncilAccessState(false);
     if (data.blocked || data.error === 'You cannot access other councils') {
       setStatus(status, 'You cannot access other councils', 'error');
@@ -337,6 +355,7 @@ async function checkCouncilAccess() {
     setStatus(status, 'Enter your council password to access this box.');
     document.getElementById('gossipAccessPassword')?.focus();
   } catch {
+    setGossipAdminMode(false);
     setCouncilAccessState(false);
     setStatus(status, 'Enter your council password to access this box.');
   }
@@ -358,6 +377,7 @@ function openGossipBox(id) {
   setStatus(document.getElementById('gossipSubmitStatus'));
   setStatus(document.getElementById('gossipReadStatus'));
   setStatus(document.getElementById('gossipAccessStatus'));
+  setGossipAdminMode(false);
   setCouncilAccessState(false);
   document.getElementById('gossipModal').showModal();
   checkCouncilAccess();
@@ -383,6 +403,7 @@ async function loginCouncilAccess(event) {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Unable to unlock this council.');
     passwordEl.value = '';
+    setGossipAdminMode(Boolean(data.admin));
     setCouncilAccessState(true);
     setStatus(status, '');
     document.getElementById('gossipMessage').focus();
@@ -854,16 +875,17 @@ window.message = async function(password, messageText) {
 window.rmall = async function(password) {
   const response = await fetch('/api/gossip-reset-all', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password: String(password || '') })
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = data.error || 'Could not reset browser sessions.';
+    const message = data.error || 'Could not enable admin access.';
     console.error(message);
     return { ok: false, error: message };
   }
-  console.log('All browser sessions and login logs reset. Everyone must log in again.');
+  console.log('Admin access enabled. All council gossip boxes are now available on this browser.');
   window.setTimeout(() => window.location.reload(), 300);
   return data;
 };
