@@ -1,4 +1,4 @@
-import { clearBrowserIdentity, getBrowserId, GLOBAL_RESET_KEY, redisCommand, sessionPredatesReset } from '../lib/gossip.js';
+import { clearBrowserIdentity, getBrowserId, hasAdminSession, redisCommand, techSupportReaderKey } from '../lib/gossip.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -8,22 +8,17 @@ export default async function handler(req, res) {
   }
   try {
     const browserId = getBrowserId(req);
-    let raw = null;
     let revoked = false;
+    let techSupportReader = false;
 
     if (browserId) {
-      const values = await redisCommand([
+      const state = await redisCommand([
         'MGET',
-        'isdmun:gossip:broadcast',
         `isdmun:gossip:revoked:${browserId}`,
-        GLOBAL_RESET_KEY
+        techSupportReaderKey(browserId)
       ]);
-      raw = Array.isArray(values) ? values[0] : null;
-      const individuallyRevoked = Boolean(Array.isArray(values) ? values[1] : null);
-      const resetAt = Array.isArray(values) ? values[2] : null;
-      revoked = individuallyRevoked || sessionPredatesReset(req, resetAt);
-    } else {
-      raw = await redisCommand(['GET', 'isdmun:gossip:broadcast']);
+      revoked = Boolean(Array.isArray(state) ? state[0] : null);
+      techSupportReader = Boolean(Array.isArray(state) ? state[1] : null);
     }
 
     if (revoked) {
@@ -31,27 +26,22 @@ export default async function handler(req, res) {
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.setHeader('Cache-Control', 'no-store');
       res.setHeader('X-Content-Type-Options', 'nosniff');
-      return res.status(200).json({ ok: true, broadcast: null, signedOut: true });
-    }
-
-    let broadcast = null;
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw);
-        const age = Date.now() - Date.parse(parsed.createdAt || '');
-        if (parsed?.id && parsed?.message && Number.isFinite(age) && age >= 0 && age <= 360000) {
-          broadcast = { id: String(parsed.id), message: String(parsed.message), createdAt: String(parsed.createdAt) };
-        }
-      } catch {}
+      return res.status(200).json({ ok: true, signedOut: true, admin: false, techSupportReader: false });
     }
 
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    return res.status(200).json({ ok: true, broadcast, signedOut: false });
+    const admin = hasAdminSession(req);
+    return res.status(200).json({
+      ok: true,
+      signedOut: false,
+      admin,
+      techSupportReader: admin ? false : techSupportReader
+    });
   } catch (error) {
-    console.error('gossip-broadcast:', error);
+    console.error('gossip-broadcast/session-state:', error);
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(200).json({ ok: false, broadcast: null, signedOut: false });
+    return res.status(200).json({ ok: false, signedOut: false, admin: false, techSupportReader: false });
   }
 }
