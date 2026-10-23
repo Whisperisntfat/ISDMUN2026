@@ -3,6 +3,7 @@ import {
   ensureBrowserId,
   getAuditMetadata,
   getCouncilSession,
+  hasAdminSession,
   isBrowserRevoked,
   issueBrowserId,
   json,
@@ -24,6 +25,9 @@ export default async function handler(req, res) {
         clearBrowserIdentity(res);
         return json(res, 200, { authenticated: false, signedOut: true });
       }
+      if (hasAdminSession(req)) {
+        return json(res, 200, { authenticated: true, admin: true, council });
+      }
       const currentCouncil = getCouncilSession(req);
       if (currentCouncil && currentCouncil !== council) {
         return json(res, 403, { authenticated: false, blocked: true, error: OTHER_COUNCIL });
@@ -38,7 +42,11 @@ export default async function handler(req, res) {
 
     const council = normalizeCouncil(req.body?.council);
     const password = String(req.body?.password || '');
-    if (!council || !password) return json(res, 401, { error: INCORRECT_PASSWORD });
+    if (!council) return json(res, 401, { error: INCORRECT_PASSWORD });
+    if (hasAdminSession(req)) {
+      return json(res, 200, { ok: true, authenticated: true, admin: true, council });
+    }
+    if (!password) return json(res, 401, { error: INCORRECT_PASSWORD });
 
     const existingCouncil = getCouncilSession(req);
     if (existingCouncil && existingCouncil !== council) {

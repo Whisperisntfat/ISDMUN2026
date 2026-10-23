@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { clearBrowserIdentity, hasCouncilSession, isBrowserRevoked, json, normalizeCouncil, redisTransaction } from '../lib/gossip.js';
+import { clearBrowserIdentity, hasAdminSession, hasCouncilSession, isBrowserRevoked, json, normalizeCouncil, redisTransaction } from '../lib/gossip.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,8 +16,9 @@ export default async function handler(req, res) {
       clearBrowserIdentity(res);
       return json(res, 401, { error: 'This browser session was signed out. Log into your council again.' });
     }
-    if (!hasCouncilSession(req, council)) return json(res, 401, { error: 'Enter the password for this council before sending a message.' });
-
+    if (!hasAdminSession(req) && !hasCouncilSession(req, council)) {
+      return json(res, 401, { error: 'Enter the password for this council before sending a message.' });
+    }
 
     const item = {
       id: crypto.randomUUID(),

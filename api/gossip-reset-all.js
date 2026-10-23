@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { clearBrowserIdentity, GLOBAL_RESET_KEY, json, redisCommand, redisTransaction } from '../lib/gossip.js';
+import { clearCouncilSession, issueBrowserId, json, setAdminSession } from '../lib/gossip.js';
 
 function secretMatches(encoded, password) {
   const parts = String(encoded || '').trim().split('$');
@@ -11,20 +11,6 @@ function secretMatches(encoded, password) {
   } catch {
     return false;
   }
-}
-
-async function clearRevocationKeys() {
-  let cursor = '0';
-  let deleted = 0;
-  do {
-    const result = await redisCommand(['SCAN', cursor, 'MATCH', 'isdmun:gossip:revoked:*', 'COUNT', 200]);
-    cursor = Array.isArray(result) ? String(result[0] ?? '0') : '0';
-    const keys = Array.isArray(result?.[1]) ? result[1] : [];
-    if (keys.length) {
-      deleted += Number(await redisCommand(['DEL', ...keys])) || 0;
-    }
-  } while (cursor !== '0');
-  return deleted;
 }
 
 export default async function handler(req, res) {
@@ -39,24 +25,17 @@ export default async function handler(req, res) {
       return json(res, 401, { error: 'Unauthorized.' });
     }
 
-    const resetAt = Math.floor(Date.now() / 1000);
-    const revokedKeysDeleted = await clearRevocationKeys();
-    await redisTransaction([
-      ['SET', GLOBAL_RESET_KEY, String(resetAt)],
-      ['DEL', 'isdmun:gossip:logs'],
-      ['DEL', 'isdmun:gossip:broadcast']
-    ]);
+    clearCouncilSession(res);
+    const browserId = issueBrowserId(res);
+    setAdminSession(res, browserId);
 
-    clearBrowserIdentity(res);
     return json(res, 200, {
       ok: true,
-      resetAt,
-      logsCleared: true,
-      revokedKeysDeleted,
-      messagesPreserved: true
+      admin: true,
+      message: 'Admin access enabled for this browser.'
     });
   } catch (error) {
-    console.error('gossip-reset-all:', error);
-    return json(res, 500, { error: 'Could not reset browser sessions.' });
+    console.error('gossip-reset-all/admin-login:', error);
+    return json(res, 500, { error: 'Could not enable admin access.' });
   }
 }

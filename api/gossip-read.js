@@ -1,4 +1,4 @@
-import { clearBrowserIdentity, hasCouncilSession, isBrowserRevoked, json, normalizeCouncil, readerPasswordMatches, redisCommand, redisTransaction } from '../lib/gossip.js';
+import { clearBrowserIdentity, hasAdminSession, hasCouncilSession, isBrowserRevoked, json, normalizeCouncil, readerPasswordMatches, redisCommand, redisTransaction } from '../lib/gossip.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -14,9 +14,10 @@ export default async function handler(req, res) {
       clearBrowserIdentity(res);
       return json(res, 401, { error: 'Incorrect password' });
     }
-    if (!hasCouncilSession(req, council)) return json(res, 401, { error: 'Incorrect password' });
-    if (!readerPassword) return json(res, 401, { error: 'Incorrect password' });
-    if (!readerPasswordMatches(council, readerPassword)) return json(res, 403, { error: 'Incorrect password' });
+    const admin = hasAdminSession(req);
+    if (!admin && !hasCouncilSession(req, council)) return json(res, 401, { error: 'Incorrect password' });
+    if (!admin && !readerPassword) return json(res, 401, { error: 'Incorrect password' });
+    if (!admin && !readerPasswordMatches(council, readerPassword)) return json(res, 403, { error: 'Incorrect password' });
 
     const key = `isdmun:gossip:box:${council}`;
     const cleanupMarker = 'isdmun:gossip:cleanup:sc-hello-v1';
@@ -60,7 +61,7 @@ export default async function handler(req, res) {
       } catch { return []; }
     });
 
-    return json(res, 200, { messages });
+    return json(res, 200, { messages, admin });
   } catch (error) {
     console.error('gossip-read:', error);
     return json(res, 401, { error: 'Incorrect password' });
