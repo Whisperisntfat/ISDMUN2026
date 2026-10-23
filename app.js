@@ -791,7 +791,6 @@ window.logs = async function(password) {
     Time: formatLogTime(item.createdAt),
     Council: item.councilLabel,
     BrowserTag: item.browserTag,
-    IPAddress: item.ipAddress,
     NetworkTag: item.networkTag,
     UserAgent: item.userAgent,
     BrowserBrands: item.clientBrands,
@@ -954,7 +953,7 @@ async function refreshTechInbox(force = false) {
     updateTechInboxBadge(techSupportMessages, previousLatestId);
     setStatus(document.getElementById('techInboxStatus'));
   } catch (error) {
-    setStatus(document.getElementById('techInboxStatus'), error.message || 'Could not refresh inbox.', 'error');
+    setStatus(document.getElementById('techInboxStatus'), error.message || 'Could not refresh', 'error');
   } finally {
     scheduleTechSupportPoll();
   }
@@ -968,7 +967,7 @@ async function submitTechSupport(event) {
   const status = document.getElementById('techHelpStatus');
   const button = document.getElementById('techHelpSend');
   if (!council || message.length < 3) {
-    setStatus(status, 'Choose your council and enter at least 3 characters.', 'error');
+    setStatus(status, 'Choose your council', 'error');
     return;
   }
   button.disabled = true;
@@ -982,10 +981,10 @@ async function submitTechSupport(event) {
       body: JSON.stringify({ action: 'submit', council, message })
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'Could not send your request.');
+    if (!response.ok) throw new Error(data.error || 'Could not send your request');
     messageEl.value = '';
     document.getElementById('techHelpCharCount').textContent = '0 / 1000';
-    setStatus(status, 'Your request was sent to the Technical Team ✓', 'success');
+    setStatus(status, 'Your request was sent to the Technical Team', 'success');
   } catch (error) {
     setStatus(status, error.message || 'Could not send your request.', 'error');
   } finally {
@@ -1079,7 +1078,6 @@ window.rmall = async function(password) {
       }
       setTechSupportAccess({ admin: Boolean(data?.admin), techSupportReader: Boolean(data?.techSupportReader) });
     } catch {
-      // Session checks are best-effort and should never affect normal site use.
     }
   }
 
