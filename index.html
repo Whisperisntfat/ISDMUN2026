@@ -63,10 +63,11 @@
         <div><strong>16</strong><span>Research papers</span></div>
         <div><strong>2</strong><span>Conference days</span></div>
       </div>
-      <div class="container announcement-wrap" aria-live="polite">
-        <div class="announcement-card">
+      <div class="container announcement-wrap">
+        <div class="announcement-card feature-disabled" aria-disabled="true">
           <span class="announcement-label">Announcements</span>
-          <p id="announcementText">No announcements at the moment.</p>
+          <p>Announcements are no longer available.</p>
+          <span class="disabled-feature-badge">Disabled</span>
         </div>
       </div>
     </section>
@@ -122,12 +123,12 @@
         <div class="section-heading reveal">
           <p class="eyebrow">Anonymous council messages</p>
           <h2>Gossip Boxes</h2>
-          <p>Log into your council, all members can drop in their message and your presidents/chairs can 'open' the box using the password given to them by coordinators.</p>
+          <p>The council gossip boxes are now closed and no longer accept or display messages.</p>
         </div>
         <div class="gossip-help-row reveal">
-          <div class="gossip-notice" role="note">
-            <strong>Information</strong>
-            <span>Log into your respective council using the password provided by your chairperson; you cannot access other council's gossip boxes.</span>
+          <div class="gossip-notice feature-disabled" role="note" aria-disabled="true">
+            <strong>Closed</strong>
+            <span>This feature is disabled. Council login, sending messages and opening boxes are no longer available.</span>
           </div>
         </div>
         <div class="gossip-grid" id="gossipGrid"></div>
@@ -414,53 +415,13 @@
 
 
 
-  <dialog class="modal gossip-modal" id="gossipModal">
-    <button class="modal-close" id="gossipModalClose" type="button" aria-label="Close">×</button>
-    <div id="gossipModalBody">
-      <span class="modal-code" id="gossipCouncilCode"></span>
-      <h2 id="gossipCouncilName">Council Gossip Box</h2>
-      <p class="gossip-modal-intro">This box is restricted to members of this council. Enter the council password once on this browser to send anonymous messages.</p>
-
-      <form id="gossipAccessForm" class="gossip-read-form gossip-access-form">
-        <label for="gossipAccessPassword">Council access password</label>
-        <div class="password-row">
-          <input id="gossipAccessPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter council password" required />
-          <button class="btn primary" type="submit" id="gossipAccessButton">Enter council</button>
-        </div>
-        <p class="form-status" id="gossipAccessStatus" aria-live="polite"></p>
-      </form>
-
-      <div id="gossipProtectedContent" hidden>
-        <form id="gossipSubmitForm" class="gossip-form">
-          <label for="gossipMessage">Your message</label>
-          <textarea id="gossipMessage" name="message" rows="6" maxlength="1000" minlength="3" placeholder="Type your gossip, shout-out, funny moment or message…" required></textarea>
-          <div class="gossip-form-meta"><span id="gossipCharCount">0 / 1000</span><span>Anonymous submission</span></div>
-          <button class="btn primary" type="submit" id="gossipSendButton">Send to the box</button>
-          <p class="form-status" id="gossipSubmitStatus" aria-live="polite"></p>
-        </form>
-
-        <div class="gossip-divider"><span>council heads only</span></div>
-
-        <form id="gossipReadForm" class="gossip-read-form">
-          <label for="gossipReaderPassword">Council head reader password</label>
-          <div class="password-row">
-            <input id="gossipReaderPassword" name="readerPassword" type="password" autocomplete="current-password" placeholder="Enter reader password" required />
-            <button class="btn secondary gossip-read-toggle" type="submit" id="gossipReadToggle">Open / refresh box</button>
-          </div>
-          <p class="form-status" id="gossipReadStatus" aria-live="polite"></p>
-        </form>
-        <div id="gossipMessages" class="gossip-messages" hidden></div>
-      </div>
-    </div>
-  </dialog>
-
   <dialog class="modal feedback-modal" id="feedbackModal">
     <button class="modal-close" id="feedbackClose" type="button" aria-label="Close">×</button>
     <div class="feedback-body">
       <span class="modal-code">ISDMUN 2026</span>
       <h2>MUN Feedback</h2>
       <p class="feedback-warning"><strong>You can only fill one feedback form</strong></p>
-      <p class="gossip-modal-intro">What are your views on ISDMUN 2026?</p>
+      <p class="gossip-modal-intro">What are your views on ISD MUN 2026?</p>
 
       <form id="feedbackForm" class="feedback-form">
         <fieldset class="feedback-site-rating">
@@ -486,15 +447,15 @@
         <textarea id="feedbackShortcomings" rows="5" maxlength="1500" placeholder="What could we improve? N/A if none"></textarea>
 
         <label for="feedbackName">Name <span>(optional)</span></label>
-        <input id="feedbackName" type="text" maxlength="100" autocomplete="name" placeholder="(optional)" />
+        <input id="feedbackName" type="text" maxlength="100" autocomplete="name" placeholder="Your name (optional)" />
 
         <button class="btn feedback-submit-button" id="feedbackSubmit" type="submit">Submit feedback</button>
         <p class="form-status" id="feedbackStatus" aria-live="polite"></p>
       </form>
 
       <div class="feedback-complete" id="feedbackComplete" hidden>
-        <strong>Thank you for your feedback</strong>
-        <p>You already submitted feedback</p>
+        <strong>Thank you for your feedback ✓</strong>
+        <p>This browser has already submitted its one feedback form.</p>
       </div>
     </div>
   </dialog>
