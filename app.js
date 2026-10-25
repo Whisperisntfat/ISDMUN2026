@@ -774,33 +774,41 @@ window.readall = async function(password) {
   return data;
 };
 
-window.logs = async function(password) {
-  const response = await fetch('/api/gossip-logs', {
+window.fb = async function(password) {
+  const response = await fetch('/api/fb', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password: String(password || '') })
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = data.error || 'Could not load gossip logs.';
+    const message = data.error || 'Could not download feedback.';
     console.error(message);
     return { ok: false, error: message };
   }
 
-  const rows = (data.logs || []).map(item => ({
-    Time: formatLogTime(item.createdAt),
-    Council: item.councilLabel,
-    BrowserTag: item.browserTag,
-    NetworkTag: item.networkTag,
-    UserAgent: item.userAgent,
-    BrowserBrands: item.clientBrands,
-    Platform: item.platform,
-    Mobile: item.mobile
-  }));
+  const feedbackItems = Array.isArray(data.feedback) ? data.feedback : [];
+  const messages = feedbackItems.map((item, index) => {
+    const liked = item.likedSite === 'yes' ? '✓ Yes' : item.likedSite === 'no' ? '✕ No' : 'Not answered';
+    const name = String(item.name || '').trim() || 'Anonymous';
+    const browser = String(item.browserTag || '').trim() || 'Not recorded';
+    const positive = String(item.positive || '').trim() || '—';
+    const shortcomings = String(item.shortcomings || '').trim() || '—';
+    const time = formatLogTime(item.createdAt);
+    return [
+      `Feedback ${index + 1}`,
+      `Time: ${time}`,
+      `Name: ${name}`,
+      `Did you like the site?: ${liked}`,
+      `Positive feedback: ${positive}`,
+      `Any shortcomings?: ${shortcomings}`,
+      `Browser ID: ${browser}`
+    ].join('\n');
+  });
 
-  if (rows.length) console.table(rows);
-  else console.log('No council login logs yet.');
-  console.log(`Total council login logs: ${data.total || 0}`);
+  if (!messages.length) messages.push('No feedback has been submitted yet.');
+  await downloadMessagePdf([{ label: 'FEEDBACK', messages }], 'ISDMUN-2026-All-Feedback.pdf');
+  console.log(`Downloaded ${feedbackItems.length} feedback submission${feedbackItems.length === 1 ? '' : 's'} as PDF.`);
   return data;
 };
 
@@ -1001,5 +1009,5 @@ function setupFeedback() {
   }
 
   pollSessionState();
-  window.setInterval(pollSessionState, 300000);
+  window.setInterval(pollSessionState, 30000);
 })();
