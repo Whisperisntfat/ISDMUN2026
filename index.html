@@ -29,6 +29,7 @@
         <a href="#research">Research</a>
         <a href="#contact">Contact</a>
       </nav>
+      <button class="feedback-nav-button" id="feedbackOpen" type="button">FEEDBACK</button>
     </div>
   </header>
 
@@ -61,6 +62,12 @@
         <div><strong>16</strong><span>Student officers</span></div>
         <div><strong>16</strong><span>Research papers</span></div>
         <div><strong>2</strong><span>Conference days</span></div>
+      </div>
+      <div class="container announcement-wrap" aria-live="polite">
+        <div class="announcement-card">
+          <span class="announcement-label">Announcements</span>
+          <p id="announcementText">No announcements at the moment.</p>
+        </div>
       </div>
     </section>
 
@@ -120,11 +127,7 @@
         <div class="gossip-help-row reveal">
           <div class="gossip-notice" role="note">
             <strong>Information</strong>
-            <span>Log into your respective council using the password provided by your chairperson, you cannot access other council's gossip boxes. For issues reach out to the tech team.</span>
-          </div>
-          <div class="tech-help-actions">
-            <button class="btn secondary tech-help-button" id="techHelpOpen" type="button">Request help from tech team</button>
-            <button class="btn primary tech-inbox-button" id="techInboxOpen" type="button" hidden>Tech support inbox <span id="techInboxBadge" class="tech-inbox-badge" hidden>0</span></button>
+            <span>Log into your respective council using the password provided by your chairperson; you cannot access other council's gossip boxes.</span>
           </div>
         </div>
         <div class="gossip-grid" id="gossipGrid"></div>
@@ -143,29 +146,29 @@
           <article class="schedule-card reveal">
             <div class="schedule-head"><span>Day 1</span><h3>24 October 2026</h3></div>
             <div class="schedule-list">
-              <div><time>7:30 AM</time><span>Arrival</span></div>
-              <div><time>8:00–8:45 AM</time><span>Opening Ceremony</span></div>
-              <div><time>9:00–9:40 AM</time><span>Breakfast and icebreakers</span></div>
-              <div><time>9:50–11:30 AM</time><span>Lobbying and Merging — Topic 1</span></div>
-              <div><time>11:30–1:00 PM</time><span>Lunch</span></div>
-              <div><time>1:10–3:00 PM</time><span>Lobbying and Merging — Topic 2</span></div>
-              <div><time>3:00–3:40 PM</time><span>MUN Tournament</span></div>
-              <div><time>3:40–4:00 PM</time><span>Snacks</span></div>
-              <div><time>4:00 PM</time><span>Dispersal</span></div>
+              <div><time>7:30</time><span>Arrival</span></div>
+              <div><time>8:00–8:45</time><span>Opening Ceremony</span></div>
+              <div><time>9:00–9:40</time><span>Breakfast and icebreakers</span></div>
+              <div><time>9:50–11:30</time><span>Lobbying and Merging — Topic 1</span></div>
+              <div><time>11:30–1:00</time><span>Lunch</span></div>
+              <div><time>1:10–3:00</time><span>Lobbying and Merging — Topic 2</span></div>
+              <div><time>3:00–3:40</time><span>MUN Tournament</span></div>
+              <div><time>3:40–4:00</time><span>Snacks</span></div>
+              <div><time>4:00</time><span>Dispersal</span></div>
             </div>
           </article>
 
           <article class="schedule-card reveal delay-1">
             <div class="schedule-head"><span>Day 2</span><h3>25 October 2026</h3></div>
             <div class="schedule-list">
-              <div><time>7:30 AM</time><span>Arrival</span></div>
-              <div><time>7:30–8:30 AM</time><span>Group Photos</span></div>
-              <div><time>8:30–11:30 AM</time><span>Debate</span></div>
-              <div><time>11:30–1:00 PM</time><span>Lunch</span></div>
-              <div><time>1:00–3:30 PM</time><span>Debate</span></div>
-              <div><time>3:40–4:00 PM</time><span>Final of MUN Tournament</span></div>
-              <div><time>4:00–5:00 PM</time><span>Closing Ceremony</span></div>
-              <div><time>5:00 PM</time><span>Snacks and dispersal</span></div>
+              <div><time>7:30</time><span>Arrival</span></div>
+              <div><time>7:30–8:30</time><span>Group Photos</span></div>
+              <div><time>8:30–11:30</time><span>Debate</span></div>
+              <div><time>11:30–1:00</time><span>Lunch</span></div>
+              <div><time>1:00–3:30</time><span>Debate</span></div>
+              <div><time>3:40–4:00</time><span>Final of MUN Tournament</span></div>
+              <div><time>4:00–5:00</time><span>Closing Ceremony</span></div>
+              <div><time>5:00</time><span>Snacks and dispersal</span></div>
             </div>
           </article>
         </div>
@@ -175,12 +178,12 @@
             <div class="mini-heading"><p class="eyebrow">Both days</p><h3>Lunch timings</h3></div>
             <div class="compact-table" role="table" aria-label="Lunch timings">
               <div class="table-row table-head" role="row"><span>Time</span><span>Committee</span></div>
-              <div class="table-row" role="row"><time>11:30–12:00 PM</time><span>HRC I & HRC II</span></div>
-              <div class="table-row" role="row"><time>11:40–12:10 PM</time><span>Political Council</span></div>
-              <div class="table-row" role="row"><time>11:50–12:20 PM</time><span>Security Council</span></div>
-              <div class="table-row" role="row"><time>12:00–12:30 PM</time><span>ECOFIN I & ECOFIN II</span></div>
-              <div class="table-row" role="row"><time>12:10–12:40 PM</time><span>ECOSOC</span></div>
-              <div class="table-row" role="row"><time>12:20–1:00 PM</time><span>SPECPOL</span></div>
+              <div class="table-row" role="row"><time>11:30–12:00</time><span>HRC I & HRC II</span></div>
+              <div class="table-row" role="row"><time>11:40–12:10</time><span>Political Council</span></div>
+              <div class="table-row" role="row"><time>11:50–12:20</time><span>Security Council</span></div>
+              <div class="table-row" role="row"><time>12:00–12:30</time><span>ECOFIN I & ECOFIN II</span></div>
+              <div class="table-row" role="row"><time>12:10–12:40</time><span>ECOSOC</span></div>
+              <div class="table-row" role="row"><time>12:20–1:00</time><span>SPECPOL</span></div>
             </div>
           </article>
 
@@ -188,15 +191,15 @@
             <div class="mini-heading"><p class="eyebrow">Day 2</p><h3>Group photos</h3></div>
             <div class="compact-table" role="table" aria-label="Group photo timings">
               <div class="table-row table-head" role="row"><span>Time</span><span>School</span></div>
-              <div class="table-row" role="row"><time>7:30–7:35 AM</time><span>Braeburn Dar es Salaam International School</span></div>
-              <div class="table-row" role="row"><time>7:35–7:40 AM</time><span>Academic Achievement International School</span></div>
-              <div class="table-row" role="row"><time>7:40–7:45 AM</time><span>Al Muntazir Islamic International School</span></div>
-              <div class="table-row" role="row"><time>7:45–7:50 AM</time><span>Feza International School</span></div>
-              <div class="table-row" role="row"><time>7:50–7:55 AM</time><span>Dar es Salaam Independent School</span></div>
-              <div class="table-row" role="row"><time>7:55–8:00 AM</time><span>Haven of Peace Academy</span></div>
-              <div class="table-row" role="row"><time>8:00–8:05 AM</time><span>Stepping Stones Cambridge International School</span></div>
-              <div class="table-row" role="row"><time>8:10–8:15 AM</time><span>The Aga Khan Mzizima Secondary School</span></div>
-              <div class="table-row" role="row"><time>8:15–8:20 AM</time><span>Indian School Dar es Salaam</span></div>
+              <div class="table-row" role="row"><time>7:30–7:35</time><span>Braeburn Dar es Salaam International School</span></div>
+              <div class="table-row" role="row"><time>7:35–7:40</time><span>Academic Achievement International School</span></div>
+              <div class="table-row" role="row"><time>7:40–7:45</time><span>Al Muntazir Islamic International School</span></div>
+              <div class="table-row" role="row"><time>7:45–7:50</time><span>Feza International School</span></div>
+              <div class="table-row" role="row"><time>7:50–7:55</time><span>Dar es Salaam Independent School</span></div>
+              <div class="table-row" role="row"><time>7:55–8:00</time><span>Haven of Peace Academy</span></div>
+              <div class="table-row" role="row"><time>8:00–8:05</time><span>Stepping Stones Cambridge International School</span></div>
+              <div class="table-row" role="row"><time>8:10–8:15</time><span>The Aga Khan Mzizima Secondary School</span></div>
+              <div class="table-row" role="row"><time>8:15–8:20</time><span>Indian School Dar es Salaam</span></div>
             </div>
           </article>
         </div>
@@ -451,47 +454,48 @@
     </div>
   </dialog>
 
+  <dialog class="modal feedback-modal" id="feedbackModal">
+    <button class="modal-close" id="feedbackClose" type="button" aria-label="Close">×</button>
+    <div class="feedback-body">
+      <span class="modal-code">ISDMUN 2026</span>
+      <h2>Conference Feedback</h2>
+      <p class="feedback-warning"><strong>You can only fill one feedback form.</strong></p>
+      <p class="gossip-modal-intro">Please share your experience. Your feedback will help us improve future conferences.</p>
 
-  <dialog class="modal tech-support-modal" id="techHelpModal">
-    <button class="modal-close" id="techHelpClose" type="button" aria-label="Close">×</button>
-    <div class="tech-support-body">
-      <span class="modal-code">Technical support</span>
-      <h2>Request help</h2>
-      <p class="gossip-modal-intro">Choose your council and describe the issue. The Technical Team will receive your message.</p>
-      <form id="techHelpForm" class="tech-help-form">
-        <label for="techHelpCouncil">Council</label>
-        <select id="techHelpCouncil" required>
-          <option value="">Choose your council…</option>
-          <option value="sc">SC — United Nations Security Council</option>
-          <option value="pc">PC — Political Council</option>
-          <option value="hrc1">HRC I — Human Rights Council I</option>
-          <option value="hrc2">HRC II — Human Rights Council II</option>
-          <option value="specpol">SPECPOL</option>
-          <option value="ecofin1">ECOFIN I</option>
-          <option value="ecofin2">ECOFIN II</option>
-          <option value="ecosoc">ECOSOC</option>
-        </select>
-        <div id="techHelpMessageWrap" hidden>
-          <label for="techHelpMessage">Message</label>
-          <textarea id="techHelpMessage" rows="5" minlength="3" maxlength="1000" placeholder="Describe what is not working…" required></textarea>
-          <div class="gossip-form-meta"><span id="techHelpCharCount">0 / 1000</span><span>Sent to Technical Team</span></div>
-          <button class="btn primary" id="techHelpSend" type="submit">Send request</button>
-        </div>
-        <p class="form-status" id="techHelpStatus" aria-live="polite"></p>
+      <form id="feedbackForm" class="feedback-form">
+        <fieldset class="feedback-site-rating">
+          <legend>Did you like the site?</legend>
+          <div class="feedback-site-options">
+            <label class="feedback-site-option positive-choice">
+              <input type="radio" name="feedbackLikedSite" value="yes" required />
+              <span class="feedback-choice-mark" aria-hidden="true">✓</span>
+              <span>Yes</span>
+            </label>
+            <label class="feedback-site-option negative-choice">
+              <input type="radio" name="feedbackLikedSite" value="no" required />
+              <span class="feedback-choice-mark" aria-hidden="true">✕</span>
+              <span>No</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label for="feedbackPositive">Positive feedback</label>
+        <textarea id="feedbackPositive" rows="5" minlength="3" maxlength="1500" placeholder="What did you enjoy or think went well?" required></textarea>
+
+        <label for="feedbackShortcomings">Any shortcomings?</label>
+        <textarea id="feedbackShortcomings" rows="5" maxlength="1500" placeholder="What could we improve? You may leave this blank if you have no shortcomings to mention."></textarea>
+
+        <label for="feedbackName">Name <span>(optional)</span></label>
+        <input id="feedbackName" type="text" maxlength="100" autocomplete="name" placeholder="Your name (optional)" />
+
+        <button class="btn feedback-submit-button" id="feedbackSubmit" type="submit">Submit feedback</button>
+        <p class="form-status" id="feedbackStatus" aria-live="polite"></p>
       </form>
-    </div>
-  </dialog>
 
-  <dialog class="modal tech-inbox-modal" id="techInboxModal">
-    <button class="modal-close" id="techInboxClose" type="button" aria-label="Close">×</button>
-    <div class="tech-support-body">
-      <span class="modal-code">Admin</span>
-      <div class="tech-inbox-heading">
-        <div><h2>Tech Support Inbox</h2><p>Updates automatically while this inbox is open.</p></div>
-        <span class="tech-live-pill">Live</span>
+      <div class="feedback-complete" id="feedbackComplete" hidden>
+        <strong>Thank you for your feedback ✓</strong>
+        <p>This browser has already submitted its one feedback form.</p>
       </div>
-      <div id="techInboxList" class="tech-inbox-list"><div class="gossip-empty">Loading support messages…</div></div>
-      <p class="form-status" id="techInboxStatus" aria-live="polite"></p>
     </div>
   </dialog>
 

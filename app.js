@@ -719,7 +719,7 @@ renderChairs();
 renderResearch();
 setupNavigation();
 setupGossip();
-setupTechSupport();
+setupFeedback();
 setupBackToTop();
 setupReveal();
 
@@ -804,22 +804,6 @@ window.logs = async function(password) {
   return data;
 };
 
-window.mkadmin = async function(password, browserId) {
-  const response = await fetch('/api/gossip-make-admin', {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password: String(password || ''), browserId: String(browserId || '').trim() })
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const message = data.error || 'Could not grant temporary Tech Support access.';
-    console.error(message);
-    return { ok: false, error: message };
-  }
-  console.log(`Temporary Tech Support admin access granted to Browser ID ${data.browserId} for 68 hours.`);
-  return data;
-};
 
 window.download = async function(password) {
   const response = await fetch('/api/gossip-download-all', {
@@ -857,197 +841,7 @@ window.signout = async function(password, browserTag) {
 
 
 
-let techSupportAccess = false;
-let techSupportCanManage = false;
-let techSupportMessages = [];
-let techSupportPollTimer = null;
-let techSupportLatestId = '';
 
-function formatSupportTime(value) {
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleString(undefined, { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: '2-digit' });
-}
-
-function setTechSupportAccess({ admin = false, techSupportReader = false } = {}) {
-  const nextAccess = Boolean(admin || techSupportReader);
-  const nextCanManage = Boolean(admin || techSupportReader);
-  const changed = nextAccess !== techSupportAccess || nextCanManage !== techSupportCanManage;
-  techSupportAccess = nextAccess;
-  techSupportCanManage = nextCanManage;
-  const button = document.getElementById('techInboxOpen');
-  if (button) button.hidden = !nextAccess;
-  if (!nextAccess) {
-    if (techSupportPollTimer) window.clearTimeout(techSupportPollTimer);
-    techSupportPollTimer = null;
-    const modal = document.getElementById('techInboxModal');
-    if (modal?.open) modal.close();
-    return;
-  }
-  if (changed) refreshTechInbox(true);
-}
-
-function renderTechInbox(messages) {
-  const list = document.getElementById('techInboxList');
-  if (!list) return;
-  if (!messages.length) {
-    list.innerHTML = '<div class="gossip-empty">No technical support requests yet.</div>';
-    return;
-  }
-  list.innerHTML = messages.map(item => {
-    const resolved = item.status === 'resolved';
-    return `<article class="tech-support-message ${resolved ? 'resolved' : ''}" data-tech-id="${safe(item.id)}">
-      <div class="tech-support-message-head">
-        <div class="tech-support-message-meta">
-          <strong>${safe(item.councilLabel || item.council || 'Council')}</strong>
-          <span class="tech-browser-tag">Browser ID: ${safe(item.browserTag || 'Not recorded')}</span>
-          <time>${safe(formatSupportTime(item.createdAt))}</time>
-        </div>
-        <span class="tech-status-pill ${resolved ? 'resolved' : ''}">${resolved ? 'Resolved' : 'Open'}</span>
-      </div>
-      <p>${safe(item.message)}</p>
-      ${techSupportCanManage ? `<div class="tech-support-actions">
-        <button type="button" class="resolve" data-tech-action="resolve" ${resolved ? 'disabled' : ''}>Resolve</button>
-        <button type="button" class="delete" data-tech-action="delete" ${resolved ? 'disabled' : ''}>Delete</button>
-      </div>` : '<div class="tech-support-readonly-note">Read-only access</div>'}
-    </article>`;
-  }).join('');
-}
-
-function updateTechInboxBadge(messages, previousLatestId) {
-  const badge = document.getElementById('techInboxBadge');
-  if (!badge || !techSupportAccess) return;
-  const unresolved = messages.filter(x => x.status !== 'resolved').length;
-  badge.textContent = String(unresolved);
-  badge.hidden = unresolved === 0;
-  const latest = messages[0]?.id || '';
-  const modal = document.getElementById('techInboxModal');
-  if (previousLatestId && latest && latest !== previousLatestId && !modal?.open) {
-    document.getElementById('techInboxOpen')?.classList.add('has-new');
-  }
-}
-
-function scheduleTechSupportPoll() {
-  if (techSupportPollTimer) window.clearTimeout(techSupportPollTimer);
-  if (!techSupportAccess) return;
-  const inboxOpen = Boolean(document.getElementById('techInboxModal')?.open);
-  techSupportPollTimer = window.setTimeout(() => refreshTechInbox(false), inboxOpen ? 5000 : 60000);
-}
-
-async function refreshTechInbox(force = false) {
-  if (!techSupportAccess && !force) return;
-  const previousLatestId = techSupportLatestId;
-  try {
-    const response = await fetch('/api/tech-support', { credentials: 'same-origin', cache: 'no-store' });
-    const data = await response.json().catch(() => ({}));
-    if (response.status === 401 || response.status === 403) {
-      setTechSupportAccess();
-      return;
-    }
-    if (!response.ok) throw new Error(data.error || 'Could not load technical support requests.');
-    techSupportAccess = true;
-    techSupportCanManage = Boolean(data.canManage);
-    techSupportMessages = Array.isArray(data.messages) ? data.messages : [];
-    techSupportLatestId = techSupportMessages[0]?.id || '';
-    renderTechInbox(techSupportMessages);
-    updateTechInboxBadge(techSupportMessages, previousLatestId);
-    setStatus(document.getElementById('techInboxStatus'));
-  } catch (error) {
-    setStatus(document.getElementById('techInboxStatus'), error.message || 'Could not refresh', 'error');
-  } finally {
-    scheduleTechSupportPoll();
-  }
-}
-
-async function submitTechSupport(event) {
-  event.preventDefault();
-  const council = document.getElementById('techHelpCouncil')?.value || '';
-  const messageEl = document.getElementById('techHelpMessage');
-  const message = messageEl?.value.trim() || '';
-  const status = document.getElementById('techHelpStatus');
-  const button = document.getElementById('techHelpSend');
-  if (!council || message.length < 3) {
-    setStatus(status, 'Choose your council', 'error');
-    return;
-  }
-  button.disabled = true;
-  button.textContent = 'Sending…';
-  setStatus(status);
-  try {
-    const response = await fetch('/api/tech-support', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'submit', council, message })
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'Could not send your request');
-    messageEl.value = '';
-    document.getElementById('techHelpCharCount').textContent = '0 / 1000';
-    setStatus(status, 'Your request was sent to the Technical Team', 'success');
-  } catch (error) {
-    setStatus(status, error.message || 'Could not send your request.', 'error');
-  } finally {
-    button.disabled = false;
-    button.textContent = 'Send request';
-  }
-}
-
-async function handleTechInboxAction(event) {
-  const button = event.target.closest('[data-tech-action]');
-  if (!button) return;
-  const card = button.closest('[data-tech-id]');
-  const id = card?.dataset.techId || '';
-  const action = button.dataset.techAction;
-  if (!id || !['resolve', 'delete'].includes(action) || !techSupportCanManage) return;
-  button.disabled = true;
-  try {
-    const response = await fetch('/api/tech-support', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, id })
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'Could not update this request.');
-    await refreshTechInbox(true);
-  } catch (error) {
-    setStatus(document.getElementById('techInboxStatus'), error.message || 'Could not update this request.', 'error');
-    button.disabled = false;
-  }
-}
-
-function setupTechSupport() {
-  const helpModal = document.getElementById('techHelpModal');
-  const inboxModal = document.getElementById('techInboxModal');
-  document.getElementById('techHelpOpen')?.addEventListener('click', () => {
-    document.getElementById('techHelpCouncil').value = '';
-    document.getElementById('techHelpMessage').value = '';
-    document.getElementById('techHelpMessageWrap').hidden = true;
-    document.getElementById('techHelpCharCount').textContent = '0 / 1000';
-    setStatus(document.getElementById('techHelpStatus'));
-    helpModal.showModal();
-  });
-  document.getElementById('techHelpClose')?.addEventListener('click', () => helpModal.close());
-  helpModal?.addEventListener('click', e => { if (e.target === helpModal) helpModal.close(); });
-  document.getElementById('techHelpCouncil')?.addEventListener('change', e => {
-    document.getElementById('techHelpMessageWrap').hidden = !e.target.value;
-    if (e.target.value) document.getElementById('techHelpMessage')?.focus();
-  });
-  document.getElementById('techHelpMessage')?.addEventListener('input', e => {
-    document.getElementById('techHelpCharCount').textContent = `${e.target.value.length} / 1000`;
-  });
-  document.getElementById('techHelpForm')?.addEventListener('submit', submitTechSupport);
-
-  document.getElementById('techInboxOpen')?.addEventListener('click', () => {
-    document.getElementById('techInboxOpen')?.classList.remove('has-new');
-    inboxModal.showModal();
-    refreshTechInbox(true);
-  });
-  document.getElementById('techInboxClose')?.addEventListener('click', () => { inboxModal.close(); scheduleTechSupportPoll(); });
-  inboxModal?.addEventListener('click', e => { if (e.target === inboxModal) { inboxModal.close(); scheduleTechSupportPoll(); } });
-  document.getElementById('techInboxList')?.addEventListener('click', handleTechInboxAction);
-}
 
 window.rmall = async function(password) {
   const response = await fetch('/api/gossip-reset-all', {
@@ -1067,6 +861,130 @@ window.rmall = async function(password) {
   return data;
 };
 
+
+function renderAnnouncement(message) {
+  const el = document.getElementById('announcementText');
+  if (!el) return;
+  const text = String(message || '').trim();
+  el.textContent = text || 'No announcements at the moment.';
+}
+
+window.message = async function message(password, text) {
+  const announcement = String(text || '').trim();
+  if (!announcement) {
+    console.error('Announcement message cannot be empty.');
+    return { ok: false, error: 'Announcement message cannot be empty.' };
+  }
+  try {
+    const response = await fetch('/api/gossip-message', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: String(password || ''), message: announcement })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = data.error || 'Could not publish the announcement.';
+      console.error(error);
+      return { ok: false, error };
+    }
+    renderAnnouncement(data.message || announcement);
+    console.log('Announcement published.');
+    return data;
+  } catch (error) {
+    const message = error?.message || 'Could not publish the announcement.';
+    console.error(message);
+    return { ok: false, error: message };
+  }
+};
+
+function setFeedbackSubmittedState(submitted) {
+  const form = document.getElementById('feedbackForm');
+  const complete = document.getElementById('feedbackComplete');
+  const openButton = document.getElementById('feedbackOpen');
+  if (form) form.hidden = Boolean(submitted);
+  if (complete) complete.hidden = !submitted;
+  if (openButton) openButton.classList.toggle('submitted', Boolean(submitted));
+}
+
+async function checkFeedbackStatus() {
+  try {
+    const response = await fetch('/api/feedback', { credentials: 'same-origin', cache: 'no-store' });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'Could not check feedback status.');
+    setFeedbackSubmittedState(Boolean(data.submitted));
+    return Boolean(data.submitted);
+  } catch (error) {
+    setStatus(document.getElementById('feedbackStatus'), error.message || 'Could not check feedback status.', 'error');
+    return false;
+  }
+}
+
+async function submitFeedback(event) {
+  event.preventDefault();
+  const positiveEl = document.getElementById('feedbackPositive');
+  const shortcomingsEl = document.getElementById('feedbackShortcomings');
+  const nameEl = document.getElementById('feedbackName');
+  const likedSiteEl = document.querySelector('input[name="feedbackLikedSite"]:checked');
+  const button = document.getElementById('feedbackSubmit');
+  const status = document.getElementById('feedbackStatus');
+  const positive = positiveEl?.value.trim() || '';
+  const shortcomings = shortcomingsEl?.value.trim() || '';
+  const name = nameEl?.value.trim() || '';
+  const likedSite = likedSiteEl?.value || '';
+
+  if (!['yes', 'no'].includes(likedSite)) {
+    setStatus(status, 'Please select whether you liked the site.', 'error');
+    return;
+  }
+
+  if (positive.length < 3) {
+    setStatus(status, 'Please enter at least 3 characters of positive feedback.', 'error');
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = 'Submitting…';
+  setStatus(status);
+  try {
+    const response = await fetch('/api/feedback', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ likedSite, positive, shortcomings, name })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (response.status === 409) {
+      setFeedbackSubmittedState(true);
+      return;
+    }
+    if (!response.ok) throw new Error(data.error || 'Could not submit feedback.');
+    try { localStorage.setItem('isdmun_feedback_submitted', '1'); } catch {}
+    setFeedbackSubmittedState(true);
+  } catch (error) {
+    setStatus(status, error.message || 'Could not submit feedback.', 'error');
+    button.disabled = false;
+    button.textContent = 'Submit feedback';
+  }
+}
+
+function setupFeedback() {
+  const modal = document.getElementById('feedbackModal');
+  const openButton = document.getElementById('feedbackOpen');
+  const closeButton = document.getElementById('feedbackClose');
+  openButton?.addEventListener('click', async () => {
+    setStatus(document.getElementById('feedbackStatus'));
+    try {
+      if (localStorage.getItem('isdmun_feedback_submitted') === '1') setFeedbackSubmittedState(true);
+    } catch {}
+    modal.showModal();
+    await checkFeedbackStatus();
+  });
+  closeButton?.addEventListener('click', () => modal.close());
+  modal?.addEventListener('click', event => { if (event.target === modal) modal.close(); });
+  document.getElementById('feedbackForm')?.addEventListener('submit', submitFeedback);
+}
+
 (function setupSessionPolling() {
   async function pollSessionState() {
     try {
@@ -1076,8 +994,9 @@ window.rmall = async function(password) {
         window.location.reload();
         return;
       }
-      setTechSupportAccess({ admin: Boolean(data?.admin), techSupportReader: Boolean(data?.techSupportReader) });
+      renderAnnouncement(data?.announcement?.message || '');
     } catch {
+      // Session checks are best-effort and should never affect normal site use.
     }
   }
 
