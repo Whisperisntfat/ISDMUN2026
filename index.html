@@ -458,9 +458,9 @@
     <button class="modal-close" id="feedbackClose" type="button" aria-label="Close">×</button>
     <div class="feedback-body">
       <span class="modal-code">ISDMUN 2026</span>
-      <h2>Conference Feedback</h2>
-      <p class="feedback-warning"><strong>You can only fill one feedback form.</strong></p>
-      <p class="gossip-modal-intro">Please share your experience. Your feedback will help us improve future conferences.</p>
+      <h2>MUN Feedback</h2>
+      <p class="feedback-warning"><strong>You can only fill one feedback form</strong></p>
+      <p class="gossip-modal-intro">What are your views on ISD MUN 2026?</p>
 
       <form id="feedbackForm" class="feedback-form">
         <fieldset class="feedback-site-rating">
@@ -480,10 +480,10 @@
         </fieldset>
 
         <label for="feedbackPositive">Positive feedback</label>
-        <textarea id="feedbackPositive" rows="5" minlength="3" maxlength="1500" placeholder="What did you enjoy or think went well?" required></textarea>
+        <textarea id="feedbackPositive" rows="5" minlength="3" maxlength="1500" placeholder="What did you enjoy or went well?" required></textarea>
 
         <label for="feedbackShortcomings">Any shortcomings?</label>
-        <textarea id="feedbackShortcomings" rows="5" maxlength="1500" placeholder="What could we improve? You may leave this blank if you have no shortcomings to mention."></textarea>
+        <textarea id="feedbackShortcomings" rows="5" maxlength="1500" placeholder="What could we improve? N/A if none"></textarea>
 
         <label for="feedbackName">Name <span>(optional)</span></label>
         <input id="feedbackName" type="text" maxlength="100" autocomplete="name" placeholder="Your name (optional)" />
@@ -493,8 +493,8 @@
       </form>
 
       <div class="feedback-complete" id="feedbackComplete" hidden>
-        <strong>Thank you for your feedback ✓</strong>
-        <p>This browser has already submitted its one feedback form.</p>
+        <strong>Thank you for your feedback</strong>
+        <p>You already submitted one feedback</p>
       </div>
     </div>
   </dialog>
